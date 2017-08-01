@@ -70,7 +70,7 @@ libraryDependencies ++= Seq("org.json4s" %% "json4s-jackson" % "3.5.2",
   "com.typesafe" % "config" % "1.3.1",
   "org.slf4j" % "slf4j-api" % "1.7.24",
   "org.slf4j" % "slf4j-log4j12" % "1.7.24",
-  "org.scalatest" %% "scalatest" % "3.0.1" % "test",
+  "org.scalatest" %% "scalatest" % "3.0.1",
   "org.scalamock" %% "scalamock-scalatest-support" % "3.5.0" % "test",
   "org.apache.curator" % "curator-recipes" % "4.0.0",
   "org.telegram" % "telegrambots" % "3.2")

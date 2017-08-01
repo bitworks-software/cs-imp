@@ -22,27 +22,27 @@ package com.bwsw.cloudstack.imp.dao.zookeeper
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream, ObjectInputStream, ObjectOutputStream}
 
 import org.apache.curator.framework.CuratorFramework
+import scala.collection.mutable
 
 /**
   * Created by Ivan Kudryavtsev on 31.07.17.
   */
-class User private(id: String, userId: String, properties: Map[String, String])(implicit curatorClient: CuratorFramework) extends Serializable {
-  def save() = {
-    val byteStream = new ByteArrayOutputStream()
-    val outputStream = new ObjectOutputStream(byteStream)
-    outputStream.writeObject(this)
-    outputStream.flush()
-    curatorClient.create().orSetData().forPath(s"$userId", byteStream.toByteArray)
-  }
-
-}
+case class User private(id: String, userId: String, properties: mutable.Map[String, String])(implicit curatorClient: CuratorFramework) extends Serializable
 
 object User {
-  def apply(id: String, userId: String)(implicit curatorClient: CuratorFramework): User = new User(id, userId, Map.empty)(curatorClient)
+  def apply(id: String, userId: String)(implicit curatorClient: CuratorFramework): User = new User(id, userId, mutable.Map.empty)(curatorClient)
 
-  def load(userId: String)(implicit curatorClient: CuratorFramework): User = {
-    val byteStream = new ByteArrayInputStream(curatorClient.getData.forPath(s"$userId"))
+  def load(id: String)(implicit curatorClient: CuratorFramework): User = {
+    val byteStream = new ByteArrayInputStream(curatorClient.getData.forPath(s"/$id"))
     val inputStream = new ObjectInputStream(byteStream)
     inputStream.readObject().asInstanceOf[User]
+  }
+
+  def save(user: User)(implicit curatorClient: CuratorFramework) = {
+    val byteStream = new ByteArrayOutputStream()
+    val outputStream = new ObjectOutputStream(byteStream)
+    outputStream.writeObject(user)
+    outputStream.flush()
+    curatorClient.create().orSetData().forPath(s"/${user.id}", byteStream.toByteArray)
   }
 }
