@@ -1,4 +1,4 @@
-package com.bwsw.cloudstack.imp.event
+package com.bwsw.cloudstack.imp.action
 
 import org.scalatest.{Matchers, FlatSpec}
 
