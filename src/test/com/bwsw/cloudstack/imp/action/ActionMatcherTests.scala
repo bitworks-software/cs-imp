@@ -1,5 +1,6 @@
 package com.bwsw.cloudstack.imp.action
 
+import com.bwsw.cloudstack.imp.event.Event
 import org.scalatest.{Matchers, FlatSpec}
 
 /**
@@ -9,7 +10,7 @@ class ActionMatcherTests extends FlatSpec with Matchers {
   it should "generate events properly" in {
     val f = ActionMatcherGenerator.getTrivialActionMatcher
 
-    val actionList = f.generate(Map[String, String]().empty)
+    val actionList = f.generate(new Event)
     actionList.isInstanceOf[List[Action]] shouldBe true
     actionList.isEmpty shouldBe false
   }
@@ -17,7 +18,7 @@ class ActionMatcherTests extends FlatSpec with Matchers {
 
 object ActionMatcherGenerator {
   def getTrivialActionMatcher(): ActionMatcher = {
-    (eventSource: Map[String, String]) => {
+    (event: Event) => {
       List(new Action)
     }
   }

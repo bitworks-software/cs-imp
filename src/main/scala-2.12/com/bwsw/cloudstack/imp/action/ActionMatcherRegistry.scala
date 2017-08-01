@@ -1,5 +1,7 @@
 package com.bwsw.cloudstack.imp.action
 
+import com.bwsw.cloudstack.imp.event.Event
+
 import scala.collection.mutable
 
 /**
@@ -12,11 +14,11 @@ class ActionMatcherRegistry {
     this
   }
 
-  def generate(eventSource: Map[String, String]): List[Action] = generateInt(registry.toList, eventSource)
-  private def generateInt(registry: Seq[ActionMatcher], eventSource: Map[String, String]): List[Action] = {
+  def generate(event: Event): List[Action] = generateInt(registry.toList, event)
+  private def generateInt(registry: Seq[ActionMatcher], event: Event): List[Action] = {
     registry match {
       case Nil => Nil
-      case h :: t => h.generate(eventSource) ++ generateInt(t, eventSource)
+      case h :: t => h.generate(event) ++ generateInt(t, event)
     }
 
   }
