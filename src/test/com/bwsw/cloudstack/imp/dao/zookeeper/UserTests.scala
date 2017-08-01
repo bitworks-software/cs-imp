@@ -20,6 +20,8 @@ class UserTests extends CuratorTests {
 
     u1 shouldBe u
     u1.properties(KEY) shouldBe u.properties(KEY)
+
+    User.listIds shouldBe List(ID).toSeq
   }
 
 

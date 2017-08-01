@@ -23,7 +23,7 @@ import java.io.{ByteArrayInputStream, ByteArrayOutputStream, ObjectInputStream, 
 
 import org.apache.curator.framework.CuratorFramework
 import scala.collection.mutable
-
+import scala.collection.JavaConverters._
 /**
   * Created by Ivan Kudryavtsev on 31.07.17.
   */
@@ -44,5 +44,9 @@ object User {
     outputStream.writeObject(user)
     outputStream.flush()
     curatorClient.create().orSetData().forPath(s"/${user.id}", byteStream.toByteArray)
+  }
+
+  def listIds(implicit  curatorClient: CuratorFramework): Seq[String] = {
+    curatorClient.getChildren().forPath("/").toArray.map(o => o.toString)
   }
 }

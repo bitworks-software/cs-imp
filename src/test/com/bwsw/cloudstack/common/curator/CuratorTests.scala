@@ -4,7 +4,7 @@ import com.bwsw.cloudstack.imp.dao.zookeeper.ZookeeperTestServer
 import com.google.common.io.Files
 import org.apache.curator.framework.{CuratorFramework, CuratorFrameworkFactory}
 import org.apache.curator.retry.ExponentialBackoffRetry
-import org.scalatest.{BeforeAndAfterAll, Matchers, FlatSpec}
+import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
 
 /**
   * Created by Ivan Kudryavtsev on 31.07.17.
@@ -18,7 +18,8 @@ class CuratorTests extends FlatSpec with Matchers with BeforeAndAfterAll {
   override def beforeAll() = {
     zk = new ZookeeperTestServer(ZOOKEEPER_PORT, Files.createTempDir().toString)
     curator = CuratorFrameworkFactory.builder()
-      .retryPolicy(new ExponentialBackoffRetry(1000,3))
+      .retryPolicy(new ExponentialBackoffRetry(1000, 3))
+      .namespace("tests")
       .connectString(s"127.0.0.1:$ZOOKEEPER_PORT").build()
     curator.start()
   }
